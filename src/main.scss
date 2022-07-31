@@ -1,0 +1,57 @@
+.head {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.inputs {
+    margin-left: 5px;
+}
+
+.input-group-text {
+    width: 100px;
+    border-radius: 5px;
+}
+
+.form-control {
+    background-color: rgb(241, 241, 248);
+}
+
+.price .input-group {
+    width: 20%;
+    float: left;
+    margin-left: 5px;
+}
+
+#total {
+    background-color: red;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#total::before {
+    content: 'Total : '
+}
+
+button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.search button {
+    width: 45%;
+    float: left;
+    margin-right: 5px;
+    margin-left: 20px;
+}
+
+#deleteA {
+    text-align: center;
+    width: 30%;
+    margin-left: 20px;
+    background-color: bisque;
+    border: black;
+}
+
+#searching {
+    width: 30%;
+}

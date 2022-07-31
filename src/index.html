@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--We will use Bootstrap for the inputs-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="main.scss">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="cruds">
+        <div class="head">
+            <h2>CRUDS</h2>
+            <h3>Product Management System</h3>
+        </div>
+        <div class="inputs">
+            <!--Bootstrap for the inputs
+            
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css" >
+        
+        -->
+            <!-- Title -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+                <input type="text" name="title" id="title" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="price">
+                <!--- Price -->
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Price</span>
+                    <input type="number" onkeyup="getTotal()" name="price" id="price" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <!-- Taxes -->
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Discount</span>
+                    <input type="number" onkeyup="getTotal()" name="taxes" id="taxes" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <!-- Ads -->
+                <div class="input-group mb-3 ">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Ads</span>
+                    <input type="number" onkeyup="getTotal()" name="ads" id="ads" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+                <!-- Discount -->
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Discount</span>
+                    <input type="number" onkeyup="getTotal()" name="discount" id="discount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+                <!-- Total -->
+                <small id="total">Here is the total Number</small>
+            </div>
+
+
+            <!-- Category -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Category</span>
+                <input type="text" name="category" id="category" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <!-- Count -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Count</span>
+                <input type="number" name="count" id="count" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <!-- Create Buttom -->
+            <button type="button" id="create" class="btn btn-outline-primary">Create</button>
+
+            <!-- Search -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="searching">Search</span>
+                <input type="text" onkeyup="searchProduct(this.value)" name="search" id="search" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="search">
+                <!-- Search By Title Buttom -->
+                <button onclick="getSearchMood(this.id)" type="button" id="search-title" class="btn btn-outline-primary">Search By Title</button>
+                <!-- Search By Category Buttom -->
+                <button onclick="getSearchMood(this.id)" type="button" id="search-category" class="btn btn-outline-primary">Search By Category</button>
+            </div>
+
+            <div id="delete_all">
+
+            </div>
+
+
+        </div>
+        <div class="outputs">
+            <table class="table">
+                <!--  The Columns of table -->
+                <thead>
+                    <tr>
+                        <!-- We don't put Count cause it's added automatically-->
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Taxes</th>
+                        <th scope="col">Ads</th>
+                        <th scope="col">Discount</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Category</th>
+                        <!-- Update and Delete Buttons-->
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+
+
+                    </tr>
+                </thead>
+                <!--- The Content of table   -->
+                <tbody id="tbody">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Samsung A30s</td>
+                        <td>1000</td>
+                        <td>100</td>
+                        <td>200</td>
+                        <td>0</td>
+                        <td>1300</td>
+                        <td>Phone</td>
+                        <td>
+                            <button: id="update" class="btn btn-info">Update</button:>
+                        </td>
+                        <td>
+                            <button: id="delete" class="btn btn-info">Delete</button:>
+                        </td>
+
+                    </tr>
+
+
+
+
+
+
+                </tbody>
+            </table>
+
+
+
+        </div>
+        <script src="../JS/script.js"></script>
+        <script>
+            let mood = "create";
+            let temp;
+            //Function 1 : Get Total
+            //We launch this function everytime  when we click in one of the fields  (=>onkeyup)
+            /*
+            A function is triggered when the user releases a key in the input field. The function transforms the character to upper case.
+            */
+            function getTotal() {
+                //We don't do anything only if price have a value
+
+                if (price.value != '') {
+                    let result = (+price.value + +taxes.value + +ads.value) - +discount.value;
+                    //We put the result in total field
+                    total.innerHTML = result;
+                    //If we write anything in price
+                    total.style = '  background-color: green;';
+                } else {
+                    //If we delete from price
+                    //We return total empty
+                    total.innerHTML = '';
+
+                    //It returns red
+                    total.style = '  background-color: red;';
+                }
+
+                //    console.log('done');
+            }
+
+
+
+            // Function 2 : Create
+
+            let Products;
+            if (localStorage.Product != null) {
+                //We return the data from the localStorage to the array in their original form (with parse != stringify)
+                Products = JSON.parse(localStorage.Product);
+            } else {
+                Products = [];
+            }
+            //We save all the data in array
+            //let Products = [];
+            //We want if we click the create button ,we gather all the data and save them in the array
+            //When we click in create button , we lunch this function
+            create.onclick = function() {
+
+                //We save all the data of every product in an object
+                let Product = {
+                        title: title.value,
+                        price: price.value,
+                        taxes: taxes.value,
+                        ads: ads.value,
+                        discount: discount.value,
+                        //The total is from innerHTML
+                        total: total.innerHTML,
+                        count: count.value,
+                        category: category.value,
+                    }
+                    //We verify all that
+                    // console.log(Product);
+                    //We add the product to the array
+                    //It depends on count 
+                    //The count must be under 100
+                if (title.value != '' && price.value != '' && category.value != '' && Product.count < 100) {
+                    if (mood === "create") {
+                        if (Product.count > 1) {
+                            //We do a loop with the number of count 
+                            for (let i = 0; i < Product.count; i++) {
+                                Products.push(Product);
+                            }
+
+                        } else {
+                            //If it writes -1 or smth else , we enter a single product
+                            Products.push(Product);
+
+                        }
+                    } else {
+                        //If the mood is update
+                        //Product = data added in the inputs form
+                        Products[temp] = Product;
+                        //But we have not the index , so we create a temp var 
+                        //Then we return to create mood
+                        mood = "create";
+                        //The buttom return create
+                        create.innerHTML = 'Create';
+                        //We display the count field
+                        count.style.display = "block";
+                    }
+                    //We clear inputs only if we create product else no
+                    clearInputs();
+
+                }
+
+
+                //We Verify this
+                //console.log(Products)
+
+                //Save data in local Storage
+                localStorage.setItem('Product', JSON.stringify(Products));
+
+
+                showProduct();
+
+            }
+
+
+            //Function 3 :Clear Inputs
+            function clearInputs() {
+                title.value = '';
+                price.value = '';
+                taxes.value = '';
+                ads.value = '';
+                discount.value = '';
+                //Total with innerHTML
+                total.innerHTML = '';
+
+                count.value = '';
+                category.value = '';
+
+
+            }
+
+
+            //Function 4 : Read the data from the array and add it to the table
+            function showProduct() {
+                getTotal();
+                let table = '';
+
+                for (let i = 0; i < Products.length; i++) {
+                    //We add all these data in tbody
+                    table += `
+                    <tr>
+                        <th scope="row">${i+1}</th>
+                        <td>${Products[i].title}</td>
+                        <td>${Products[i].price}</td>
+                        <td>${Products[i].taxes}</td>
+                        <td>${Products[i].ads}</td>
+                        <td>${Products[i].discount}</td>
+                        <td>${Products[i].total}</td>
+                        <td>${Products[i].category}</td>
+                        <td>
+                            <button: id="update" onclick="update(${i})" class="btn btn-info">Update</button:>
+                        </td>
+                        <td>
+                            <button: id="delete" onclick="deleteProduct(${i})"    class="btn btn-info">Delete</button:>
+                        </td>
+
+                    </tr> `
+
+
+                }
+
+                document.getElementById('tbody').innerHTML = table;
+
+
+                let btnDelete = document.getElementById('delete_all');
+
+                if (Products.length > 0) {
+                    btnDelete.innerHTML = `<button onclick="deleteAll()"    class="btn btn-info">Delete All ( ${Products.length} ) </button:>`
+
+                } else {
+                    //If there is no data , delete the delete All button
+                    btnDelete.innerHTML = '';
+                }
+
+            }
+
+            showProduct();
+
+            //Function 5 : Delete
+            //This function is launched only if we click on delete button
+
+            function deleteProduct(i) {
+                // console.log(i);
+                //We delete from the array
+                Products.splice(i, 1);
+                //We delete from localStorage
+                localStorage.Product = JSON.stringify(Products);
+                //We show the data after every delete
+                showProduct();
+            }
+
+            //Function 6 :DeleteAll
+            //We want if we have data in the table , we have a button delete all else there any delete all button
+            function deleteAll() {
+                //We have to delete the data from the array and from the localStorage
+                //LocalStorage
+                localStorage.clear();
+                //Array
+                Products.splice(0);
+                //Reload
+                showProduct();
+            }
+
+            //Function 7 :Count
+            //Function 8 : Update
+            function update(i) {
+                //We verify it
+                //console.log(i);
+
+                title.value = Products[i].title;
+                price.value = Products[i].price;
+                taxes.value = Products[i].taxes;
+                ads.value = Products[i].ads;
+                discount.value = Products[i].discount;
+                category.value = Products[i].category;
+                //We calculate the total 
+                getTotal();
+                //Don't display count input
+                count.style.display = "none";
+
+                //Create button become Update button
+                create.innerHTML = "Update ";
+                mood = "update";
+                temp = i;
+
+                //We want if we click in the update button , we scroll to up 
+                scroll({
+                    top: 0
+                })
+            }
+
+
+            //Function 9 :Search 
+            //mood var (by title by default)
+            let searchMood = 'title'
+
+            //The id of the search input
+            let search = document.getElementById('search');
+
+            function getSearchMood(id) {
+                //We launch this function only if we click on search by buttons
+
+                /*
+        
+            <div class="search">
+                <!-- Search By Title Buttom -->
+                <button onclick = "getSearchMood()" type="button" id="search-title" class="btn btn-outline-primary">Search By Title</button>
+                <!-- Search By Category Buttom -->
+                <button onclick = "getSearchMood()" type="button" id="search-category" class="btn btn-outline-primary">Search By Category</button>
+            </div>
+        */
+                //When we launch this function , we must have the id of the button clicked -> id as parameter
+                /*
+          <div class="search">
+                <!-- Search By Title Buttom -->
+                <button onclick="getSearchMood(this.id)" type="button" id="search-title" class="btn btn-outline-primary">Search By Title</button>
+                <!-- Search By Category Buttom -->
+                <button onclick="getSearchMood(this.id)" type="button" id="search-category" class="btn btn-outline-primary">Search By Category</button>
+            </div>
+        */
+                //To test it
+                // console.log(id);
+                //the search mood depends on the button clicked
+                //search-title -> button id
+                if (id == "search-title") {
+                    //When we click in the search by title the field name must change we do 
+                    searching.innerHTML = "Search By Title";
+                    searchMood = 'title';
+                } else {
+                    //When we click in the search by categ the field name must change we do 
+                    searching.innerHTML = "Search By Category";
+
+                    searchMood = 'category';
+                }
+                //When we change the search from Title to Categ we have to empty the field and inversibly
+                search.value = '';
+                //We have to show data of products everychange
+                showProduct();
+
+
+                //To test it
+                //console.log(searchMood);
+
+
+                //When we click in one of these two buttons , we open the search field -> focus
+                /*
+                //The id of the search input
+            let search = document.getElementById('search');
+            */
+                search.focus();
+                //When we click in the search by title the field name must change we do 
+                /*
+  if (id == "search-title") {
+                    //When we click in the search by title the field name must change we do 
+                    search.innerHTML = "Search By Title";
+                    searchMood = 'title';
+                } else {
+                    //When we click in the search by categ the field name must change we do 
+                    search.innerHTML = "Search By Category";
+
+                    searchMood = 'category';
+                }
+
+                */
+                //We design the search field
+                /*
+
+                #searching {
+                    width: 30%;
+                }
+
+                */
+
+            }
+
+            //Search function
+            function searchProduct(value) {
+                //We launch this function only if we click in the search field and write smth -> onkeyup 
+                /*
+          <!-- Search -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="searching">Search</span>
+                <input type="text" onkeyup="searchProduct()"   name="search" id="search" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+            */
+                //We have to have the value written in the input
+                /* => this.value
+                                <input type="text" onkeyup="searchProduct(this.value)" name="search" id="search" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                */
+                /*
+                            function searchProduct(value) {
+*/
+                //To test the value
+                //console.log(value);
+                //We do a loop in the array and search if value includes the elt.title
+                let table = '';
+                if (searchMood == 'title') {
+
+                    for (let i = 0; i < Products.length; i++) {
+                        //.includes
+                        //we have to have the same result between Upper or LowerCase
+                        // -> ToLowerCase
+                        if (Products[i].title.toLowerCase().includes(value.toLowerCase())) {
+                            //Test
+                            // console.log(i); -> the index in which we have true 
+                            //We print all the data if it exists
+                            //The code in showProduct
+                            table += `
+                    <tr>
+                        <th scope="row">${i}</th>
+                        <td>${Products[i].title}</td>
+                        <td>${Products[i].price}</td>
+                        <td>${Products[i].taxes}</td>
+                        <td>${Products[i].ads}</td>
+                        <td>${Products[i].discount}</td>
+                        <td>${Products[i].total}</td>
+                        <td>${Products[i].category}</td>
+                        <td>
+                            <button: id="update" onclick="update(${i})" class="btn btn-info">Update</button:>
+                        </td>
+                        <td>
+                            <button: id="delete" onclick="deleteProduct(${i})"    class="btn btn-info">Delete</button:>
+                        </td>
+
+                    </tr> `
+
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < Products.length; i++) {
+                        //.includes
+                        //we have to have the same result between Upper or LowerCase
+                        // -> ToLowerCase
+                        if (Products[i].category.toLowerCase().includes(value.toLowerCase())) {
+                            //Test
+                            // console.log(i); -> the index in which we have true 
+                            //We print all the data if it exists
+                            //The code in showProduct
+                            table += `
+                    <tr>
+                        <th scope="row">${i}</th>
+                        <td>${Products[i].title}</td>
+                        <td>${Products[i].price}</td>
+                        <td>${Products[i].taxes}</td>
+                        <td>${Products[i].ads}</td>
+                        <td>${Products[i].discount}</td>
+                        <td>${Products[i].total}</td>
+                        <td>${Products[i].category}</td>
+                        <td>
+                            <button: id="update" onclick="update(${i})" class="btn btn-info">Update</button:>
+                        </td>
+                        <td>
+                            <button: id="delete" onclick="deleteProduct(${i})"    class="btn btn-info">Delete</button:>
+                        </td>
+
+                    </tr> `
+
+                        }
+
+                    }
+
+
+                }
+                document.getElementById('tbody').innerHTML = table;
+
+
+
+
+            }
+
+            //Function 10 : Clean Data
+            //We have to test the fields before input
+            //We go to create function
+            /*
+              // Function 2 : Create
+
+            let Products;
+            if (localStorage.Product != null) {
+                //We return the data from the localStorage to the array in their original form (with parse != stringify)
+                Products = JSON.parse(localStorage.Product);
+            } else {
+                Products = [];
+            }
+            //We save all the data in array
+            //let Products = [];
+            //We want if we click the create button ,we gather all the data and save them in the array
+            //When we click in create button , we lunch this function
+            create.onclick = function() {
+
+                //We save all the data of every product in an object
+                let Product = {
+                        title: title.value,
+                        price: price.value,
+                        taxes: taxes.value,
+                        ads: ads.value,
+                        discount: discount.value,
+                        //The total is from innerHTML
+                        total: total.innerHTML,
+                        count: count.value,
+                        category: category.value,
+                    }
+                    //We verify all that
+                    // console.log(Product);
+                    //We add the product to the array
+                    //It depends on count 
+                    //The count must be under 100
+                if (title.value != '' && price.value != '' && category.value != '' && Product.count < 100) {
+                    if (mood === "create") {
+                        if (Product.count > 1) {
+                            //We do a loop with the number of count 
+                            for (let i = 0; i < Product.count; i++) {
+                                Products.push(Product);
+                            }
+
+                        } else {
+                            //If it writes -1 or smth else , we enter a single product
+                            Products.push(Product);
+
+                        }
+                    } else {
+                        //If the mood is update
+                        //Product = data added in the inputs form
+                        Products[temp] = Product;
+                        //But we have not the index , so we create a temp var 
+                        //Then we return to create mood
+                        mood = "create";
+                        //The buttom return create
+                        create.innerHTML = 'Create';
+                        //We display the count field
+                        count.style.display = "block";
+                    }
+                    //We clear inputs only if we create product else no
+                    clearInputs();
+
+                }
+
+
+                //We Verify this
+                //console.log(Products)
+
+                //Save data in local Storage
+                localStorage.setItem('Product', JSON.stringify(Products));
+
+
+                showProduct();
+
+            }
+
+            */
+            //The data must begin from 1
+            /*
+                  //Function 4 : Read the data from the array and add it to the table
+             function showProduct() {
+                 getTotal();
+                 let table = '';
+
+                 for (let i = 0; i < Products.length; i++) {
+                     //We add all these data in tbody
+                     table += `
+                     <tr>
+                         <th scope="row">${i+1}</th>
+                         <td>${Products[i].title}</td>
+                         <td>${Products[i].price}</td>
+                         <td>${Products[i].taxes}</td>
+                         <td>${Products[i].ads}</td>
+                         <td>${Products[i].discount}</td>
+                         <td>${Products[i].total}</td>
+                         <td>${Products[i].category}</td>
+                         <td>
+                             <button: id="update" onclick="update(${i})" class="btn btn-info">Update</button:>
+                         </td>
+                         <td>
+                             <button: id="delete" onclick="deleteProduct(${i})"    class="btn btn-info">Delete</button:>
+                         </td>
+
+                     </tr> `
+
+
+                 }
+
+                 document.getElementById('tbody').innerHTML = table;
+
+
+                 let btnDelete = document.getElementById('delete_all');
+
+                 if (Products.length > 0) {
+                     btnDelete.innerHTML = `<button onclick="deleteAll()"    class="btn btn-info">Delete All ( ${Products.length} ) </button:>`
+
+                 } else {
+                     //If there is no data , delete the delete All button
+                     btnDelete.innerHTML = '';
+                 }
+
+             }
+
+             showProduct();
+             */
+        </script>
+</body>
+
+</html>
